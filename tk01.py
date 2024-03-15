@@ -13,7 +13,7 @@ def open_file_selection():
     
     
     
- def open_from_dialog(self):
+def open_from_dialog(self):
         path = tkinter.filedialog.askopenfilename()
         if len(path) > 0:
             self.open(path)   

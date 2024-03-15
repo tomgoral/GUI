@@ -1,0 +1,81 @@
+import tkinter as tk
+
+
+class CurrencyConverter:
+    def __init__(self, window):
+        self.window = window
+        self.window.title('Currency Converter')
+        
+        self.currency_data = self.get_currency_data()
+        
+        self.from_currency_var = tk.StringVar()
+        self.to_currency_var = tk.StringVar()
+        self.amount_var = tk.DoubleVar()
+        self.result_var = tk.DoubleVar()
+
+        self.create_widgets()
+        
+    def get_currency_data(self):
+        currency_data = {
+            'USD': 1.0,
+            'EUR': 0.85,
+            'GBP': 0.77,
+            'INR': 73.0,
+            'AUD': 1.35,
+            'CAD': 1.32,
+            'SGD': 1.43,
+            'CHF': 0.91,
+            'MYR': 4.16,
+            'JPY': 105.7,
+            'CNY': 6.69
+        }
+        return currency_data
+    
+    def create_widgets(self):
+        # Label
+        from_label = tk.Label(self.window, text="From Currency:")
+        to_label = tk.Label(self.window, text="To Currency:")
+        amount_label = tk.Label(self.window, text="Amount:")
+        result_label = tk.Label(self.window, text="Converted Amount:")
+
+        from_label.grid(row=0, column=0)
+        to_label.grid(row=1, column=0)
+        amount_label.grid(row=2, column=0)
+        result_label.grid(row=3, column=0)
+
+        # Entry
+        from_entry = tk.Entry(self.window, textvariable=self.from_currency_var)
+        to_entry = tk.Entry(self.window, textvariable=self.to_currency_var)
+        amount_entry = tk.Entry(self.window, textvariable=self.amount_var)
+        result_entry = tk.Entry(self.window, textvariable=self.result_var)
+
+        from_entry.grid(row=0, column=1)
+        to_entry.grid(row=1, column=1)
+        amount_entry.grid(row=2, column=1)
+        result_entry.grid(row=3, column=1)
+
+        # Convert button
+        convert_button = tk.Button(self.window, text="Convert", command=self.convert)
+        convert_button.grid(row=4, column=0, columnspan=2)
+        
+    def convert(self):
+        from_currency = self.from_currency_var.get()
+        to_currency = self.to_currency_var.get()
+        amount = self.amount_var.get()
+
+        if from_currency != to_currency:
+            try:
+                # Calculate the converted amount using the exchange rates
+                converted_amount = amount * (self.currency_data[to_currency] / self.currency_data[from_currency])
+                self.result_var.set(round(converted_amount, 2))
+            except KeyError:
+                self.result_var.set("Currency not found")
+        else:
+            self.result_var.set(amount)
+
+    
+        
+if __name__ == "__main__":
+    root = tk.Tk()
+    currency_converter = CurrencyConverter(root)
+    root.mainloop()
